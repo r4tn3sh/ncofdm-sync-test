@@ -42,7 +42,7 @@ namespace win {
     /*!
      * \Initialize the usrp
      */
-    void init_usrp()
+    void ul_tx::init_usrp()
     {
         // Instantiate the multi_usrp
         m_usrp = uhd::usrp::multi_usrp::make(uhd::device_addr_t(device_addr));

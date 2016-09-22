@@ -33,12 +33,11 @@ int main(int argc, char * argv[]){
     {
         pnoffset = strtol(argv[1], NULL, 10);
     }
-    set_realtime_priority();
 
 	std::cout << "Start transmit chain..." << std::endl;
     srand(time(NULL)); //Initialize random seed
 
-    get_pnsequence();
+    // get_pnsequence();
     ul_tx tx = ul_tx(freq, sample_rate, tx_gain, amp, device_addr);
 
     std::vector<unsigned char> ulseq(ULSEQLEN);

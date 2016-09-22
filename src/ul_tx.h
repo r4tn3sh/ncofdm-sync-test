@@ -51,7 +51,7 @@ namespace win {
         /*!
          * \brief Send a single PHY frame at the given PHY Rate
          */
-        void ul_tx::send_data(std::vector<std::complex<double> > payload);
+        void send_data(std::vector<std::complex<double> > payload);
 
         /*!
          * \Initialize the usrp
@@ -61,27 +61,27 @@ namespace win {
         /*!
          *  Set transmit metadata.
          */
-        void ul_tx::set_md(bool sob, bool eob, bool hts, uhd::time_spec_t tspec);
+        void set_md(bool sob, bool eob, bool hts, uhd::time_spec_t tspec);
        
         /*!
          *  Set central frequency.
          */
-        void ul_tx::set_cen_fre(double freq);
+        void set_cen_fre(double freq);
        
         /*!
          *  Set sampling rate.
          */
-        void ul_tx::set_samp_rate(double rate);
+        void set_samp_rate(double rate);
        
         /*!
          *  Set transmit gain.
          */
-        void ul_tx::set_tx_gain(double gain);
+        void set_tx_gain(double gain);
        
         /*!
          *  Set device address.
          */
-        void ul_tx::set_dev_addr(std::string addr);
+        void set_dev_addr(std::string addr);
 
 
         double txflagtimefrac = 0.0;
