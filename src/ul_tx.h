@@ -81,8 +81,16 @@ namespace win {
         /*!
          *  Set device address.
          */
-        void set_dev_addr(std::string addr);
+        void set_dev_addr(std::string addr); 
 
+        /*!
+         *  Set USRP time to 0.
+         */
+        void reset_usrp_time();
+
+        void reset_usrp_time_with_pps();
+
+        void use_external_clock();
 
         double txflagtimefrac = 0.0;
         double txflagtimefull = 0.0;

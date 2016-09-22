@@ -100,4 +100,19 @@ namespace win {
         device_addr = addr;
     }
 
+    void ul_tx::reset_usrp_time()
+    {
+        m_usrp->set_time_now(0.0);
+    }
+
+    void ul_tx::reset_usrp_time_with_pps()
+    {
+        m_usrp->set_time_unknown_pps(uhd::time_spec_t(0.0));
+    }
+
+    void ul_tx::use_external_clock()
+    {
+        m_usrp->set_clock_source("external");
+    }
+
 }

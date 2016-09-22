@@ -57,18 +57,13 @@ int main(int argc, char * argv[]){
     }
 
     tx.init_usrp();
+    tx.use_external_clock();
+    tx.reset_usrp_time();
 
     int tx_count = 0;
     while(1)
     {
-        // test_tx(freq, sample_rate, tx_gain, amp, phy_rate);
-        // // Transmit all the packets
-        // for(int i = 0; i < 10000; i++)
-        // {
-            tx.send_data(samples);
-        // }
-        // std::cout << "Transmission number : " << ++tx_count << std::endl;
-        // sleep(1);
+        tx.send_data(samples);
     }
 }
 
