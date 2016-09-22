@@ -40,7 +40,7 @@ int main(int argc, char * argv[]){
     srand(time(NULL)); //Initialize random seed
 
     get_pnsequence();
-    ul_tx tx = ul_tx(freq, sample_rate, tx_gain, amp, device_addr);
+    ul_tx tx = ul_tx();
 
     std::vector<unsigned char> payload(PKTLEN,0);
 

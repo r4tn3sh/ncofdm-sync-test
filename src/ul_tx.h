@@ -46,7 +46,7 @@ namespace win {
          *  - *Note:
          *     + rx_gain -> 20 even though it is irrelevant for the transmitter
          */
-        ul_tx(double freq = 5.72e9, double samp_rate = 5e6, double tx_gain = 20, double tx_amp=1.0, std::string device_addr="addr=192.168.10.2");
+        ul_tx();
 
         /*!
          * \brief Send a single PHY frame at the given PHY Rate
@@ -61,7 +61,7 @@ namespace win {
         /*!
          *  Set transmit metadata.
          */
-        void set_md(bool sob, bool eob, bool hts, uhd::time_spec_t tspec);
+        void set_txmetadata(bool sob, bool eob, bool hts, uhd::time_spec_t tspec);
        
         /*!
          *  Set central frequency.
@@ -104,7 +104,7 @@ namespace win {
         uhd::tx_metadata_t tx_md;
         double cen_freq = 2e9;
         double samp_rate = 10e6;
-        double tx_gain = 30;
+        double tx_gain = 20;
         double tx_amp = 1.0;
         std::string device_addr = "addr=192.168.10.2";
 

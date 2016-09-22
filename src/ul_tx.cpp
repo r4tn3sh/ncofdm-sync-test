@@ -12,7 +12,7 @@ namespace win {
     /*!
      *  This constructor shows exactly what parameters need to be set for the transmitter
      */
-    ul_tx::ul_tx(double freq, double samp_rate, double tx_gain, double tx_amp, std::string device_addr) 
+    ul_tx::ul_tx() 
     {
     }
 
@@ -31,7 +31,7 @@ namespace win {
     /*!
      *  Set transmit metadata.
      */
-    void ul_tx::set_md(bool sob, bool eob, bool hts, uhd::time_spec_t tspec)
+    void ul_tx::set_txmetadata(bool sob, bool eob, bool hts, uhd::time_spec_t tspec)
     {
         tx_md.start_of_burst = sob;
         tx_md.end_of_burst = eob;
