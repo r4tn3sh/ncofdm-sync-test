@@ -61,11 +61,11 @@ int main(int argc, char * argv[]){
     tx.reset_usrp_time();
 
     int tx_count = 0;
-    uhd::time_spec_t offset_time = uhd::time_spec_t(0.0);
+    double tx_time = 0.0;
     while(1)
     {
-        offset_time += uhd::time_spec_t(0.1);
-        tx.set_txmetadata(true, true, true, offset_time);
+        tx_time += 0.1;
+        tx.set_txmetadata(true, true, true, uhd::time_spec_t(tx_time));
         tx.send_data(samples);
     }
 }

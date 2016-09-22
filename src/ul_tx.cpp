@@ -31,9 +31,9 @@ namespace win {
     /*!
      *  Set transmit metadata.
      */
-    void ul_tx::set_txmetadata(bool sob, bool eob, bool hts, uhd::time_spec_t tspec)
+    void ul_tx::set_txmetadata(bool stob, bool eob, bool hts, uhd::time_spec_t tspec)
     {
-        tx_md.start_of_burst = sob;
+        tx_md.start_of_burst = stob;
         tx_md.end_of_burst = eob;
         tx_md.has_time_spec = hts;
         tx_md.time_spec = tspec;
@@ -102,7 +102,7 @@ namespace win {
 
     void ul_tx::reset_usrp_time()
     {
-        m_usrp->set_time_now(0.0);
+        m_usrp->set_time_now(uhd::time_spec_t(0.0));
     }
 
     void ul_tx::reset_usrp_time_with_pps()
