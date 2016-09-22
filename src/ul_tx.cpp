@@ -21,11 +21,7 @@ namespace win {
      */
     void ul_tx::send_data(std::vector<std::complex<double> > payload)
     {
-        uhd::tx_metadata_t tx_metadata;
-        tx_metadata.start_of_burst = true;
-        tx_metadata.end_of_burst = true;
-        tx_metadata.has_time_spec = false;
-        m_tx_streamer->send(&payload[0], payload.size(), tx_metadata);
+        m_tx_streamer->send(&payload[0], payload.size(), tx_md);
     }
 
     /*!
