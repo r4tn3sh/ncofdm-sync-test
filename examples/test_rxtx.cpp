@@ -52,7 +52,7 @@ int main(int argc, char * argv[]){
     get_pnsequence();
     ul_rxtx rxtx = ul_rxtx();
 
-    std::vector<unsigned char> payload(PKTLEN,0);
+    std::vector<unsigned char> payload(ULSEQLEN,0);
 
     for(int i = 0; i < ULSEQLEN; i++)
     {
@@ -68,32 +68,30 @@ int main(int argc, char * argv[]){
 
     rxtx.init_usrp();
     rxtx.use_external_clock();
-    rxtx.reset_usrp_time();
+    // rxtx.reset_usrp_time();
 
     const size_t num_of_samples = PKTLEN;
-    std::vector<std::complex<double> > m_samples(num_of_samples); //!< Vector to hold the raw samples received from the USRP and passed into the ul_receiver_chain
+    std::vector<std::complex<double> > rx_samples(num_of_samples); //!< Vector to hold the raw samples received from the USRP and passed into the ul_receiver_chain
 
     int rx_count = 0;
     double rx_time = 0.0;
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    // std::this_thread::sleep_for(std::chrono::milliseconds(5000));
     double curr_time = rxtx.get_usrp_time().get_real_secs();
-    rx_time = curr_time + 0.5;
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
     double samp_duration = 1.0/samp_rate;
 
     // ********** Detection ************
-    std::cout << "PN sequence detection started : "<< std::endl;
+    std::cout << "PN sequence detection started at "<< curr_time << std::endl;
     auto begin_time = std::chrono::high_resolution_clock::now();
     uhd::rx_metadata_t rx_metadata;
     while(1)
     {
-        rxtx.recv_data(num_of_samples, m_samples);
+        rxtx.recv_data(num_of_samples, rx_samples);
         int pk_index = PKTLEN;
         if (pnsearch%73 == 0)
         {
             rx_metadata = rxtx.rx_md;
-            pk_index = correlate_ulseq(m_samples);
+            pk_index = correlate_ulseq(rx_samples);
         }
 
         pnsearch++;
@@ -104,7 +102,7 @@ int main(int argc, char * argv[]){
             rx_time += pk_index*samp_duration;
             std::cout<< "Signal found at " << pk_index << " at time " << rx_time << std::endl;
             std::cout<< "Detailed frame start time : " <<rx_metadata.time_spec.get_full_secs() << " + " <<rx_metadata.time_spec.get_frac_secs() << std::endl;
-            tx_time = rx_time + 0.00005 + 0.1;
+            tx_time = rx_time + 0.0000468 + 1.0;
             std::cout<< "Transmission scheduled at "  << tx_time << std::endl;
             break;
         }
@@ -119,13 +117,15 @@ int main(int argc, char * argv[]){
     }
     rxtx.stop_rx();
     // ********** Transmission ************
-    // std::cout << "Transmisson started" << std::endl;
-    // while(1)
-    // {
-    //     tx_time += 0.0001;
-    //     rxtx.set_txmetadata(true, true, true, uhd::time_spec_t(tx_time));
-    //     rxtx.send_data(samples);
-    // }
+    std::cout << "Current time is " << rxtx.get_usrp_time().get_real_secs() << std::endl; 
+    std::cout << "Transmisson started ..." << std::endl;
+
+    while(1)
+    {
+        tx_time += 0.0001;
+        rxtx.set_txmetadata(true, true, true, uhd::time_spec_t(tx_time));
+        rxtx.send_data(samples);
+    }
 }
 
 
@@ -181,7 +181,7 @@ int correlate_ulseq(std::vector<std::complex<double> > samples)
         denm = sqrt(sqr_sum-N*pow(abs(temp_mean),2))*sqrt(N);
         corr_coeff = numr/denm;
 
-        // if(corr_coeff<-test_thresh || corr_coeff>test_thresh)
+        if(corr_coeff<-test_thresh || corr_coeff>test_thresh)
             std::cout << "Correlation coefficient : " << corr_coeff << " " << i <<  std::endl;
 
         if(corr_coeff>COEFFTHRESH)

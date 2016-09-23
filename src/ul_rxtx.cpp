@@ -21,9 +21,11 @@ namespace win {
      */
     void ul_rxtx::send_data(std::vector<std::complex<double> > payload)
     {
-        //std::cout << tx_md.has_time_spec << " " <<tx_md.time_spec.get_real_secs() << std::endl;
+        // std::cout << tx_md.has_time_spec << " " <<tx_md.time_spec.get_real_secs() << " -- "<< m_usrp->get_time_now().get_real_secs()<< std::endl;
+        // std::cout << tx_md.has_time_spec << " " <<tx_md.time_spec.get_real_secs() << std::endl;
         size_t num_rx_data = m_tx_streamer->send(&payload[0], payload.size(), tx_md, 2.1);
-        //std::cout << num_rx_data << std::endl;
+        if (num_rx_data < payload.size())
+            std::cout << num_rx_data << std::endl;
     }
 
 
@@ -36,6 +38,7 @@ namespace win {
         if (rx_md.error_code == uhd::rx_metadata_t::ERROR_CODE_TIMEOUT) {
             std::cout << boost::format("Timeout while streaming") << std::endl;
         }
+        std::cout<< "Detailed frame start time : " <<rx_md.time_spec.get_full_secs() << " + " <<rx_md.time_spec.get_frac_secs() << std::endl;
     }
 
     /*!
@@ -98,8 +101,9 @@ namespace win {
     void ul_rxtx::stop_rx()
     {
         // Shut down receiver
-        //stream_cmd.stream_mode = uhd::stream_cmd_t::STREAM_MODE_STOP_CONTINUOUS;
-        //m_rx_streamer->issue_stream_cmd(stream_cmd);
+        std::cout << "Stopping receiver...." <<std::endl;
+        uhd::stream_cmd_t stream_cmd(uhd::stream_cmd_t::STREAM_MODE_STOP_CONTINUOUS);
+        m_rx_streamer->issue_stream_cmd(stream_cmd);
     }
 
     /*!
