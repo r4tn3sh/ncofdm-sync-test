@@ -21,7 +21,9 @@ namespace win {
      */
     void ul_tx::send_data(std::vector<std::complex<double> > payload)
     {
-        m_tx_streamer->send(&payload[0], payload.size(), tx_md);
+        std::cout << tx_md.has_time_spec << " " <<tx_md.time_spec.get_real_secs() << std::endl;
+        size_t num_rx_data = m_tx_streamer->send(&payload[0], payload.size(), tx_md, 2.1);
+        std::cout << num_rx_data << std::endl;
     }
 
     /*!
@@ -33,6 +35,14 @@ namespace win {
         tx_md.end_of_burst = eob;
         tx_md.has_time_spec = hts;
         tx_md.time_spec = tspec;
+    }
+
+    /*!
+     *  Get current time.
+     */
+    uhd::time_spec_t ul_tx::get_usrp_time()
+    {
+        return(m_usrp->get_time_now());
     }
 
     /*!
