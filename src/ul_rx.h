@@ -51,7 +51,7 @@ namespace win {
         /*!
          * \brief Send a single PHY frame at the given PHY Rate
          */
-        void recv_data(std::vector<std::complex<double> > payload);
+        void recv_data(int num_samples, std::vector<std::complex<double> > & payload);
 
         /*!
          * \Initialize the usrp
