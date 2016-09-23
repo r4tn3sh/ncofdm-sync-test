@@ -67,14 +67,12 @@ int main(int argc, char * argv[]){
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     double curr_time = tx.get_usrp_time().get_real_secs();
     tx_time = curr_time + 0.5;
-    tx.set_txmetadata(true, true, true, uhd::time_spec_t(tx_time));
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
     while(1)
     {
-        tx_time += 1.0;
-        tx.send_data(samples);
-        std::cout << tx.get_usrp_time().get_real_secs() << std::endl; 
+        tx_time += 0.0001;
         tx.set_txmetadata(true, true, true, uhd::time_spec_t(tx_time));
+        tx.send_data(samples);
+        // std::cout << tx.get_usrp_time().get_real_secs() << std::endl; 
         // tx.set_txmetadata(false, true, false, uhd::time_spec_t(tx_time));
         // tx.send_data(samples);
     }
