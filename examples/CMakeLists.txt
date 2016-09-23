@@ -18,12 +18,17 @@ list(APPEND test_tx_srcs
 list(APPEND test_rx_srcs
 	test_rx.cpp
 )
+list(APPEND test_rxtx_srcs
+	test_rxtx.cpp
+)
+
 
 ########################################################################
 # Create executables
 ########################################################################
 add_executable(test_tx ${test_tx_srcs})
 add_executable(test_rx ${test_rx_srcs})
+add_executable(test_rxtx ${test_rxtx_srcs})
 
 
 ########################################################################
@@ -31,3 +36,4 @@ add_executable(test_rx ${test_rx_srcs})
 ########################################################################
 target_link_libraries(test_tx wl_sync_test)
 target_link_libraries(test_rx wl_sync_test)
+target_link_libraries(test_rxtx wl_sync_test)
