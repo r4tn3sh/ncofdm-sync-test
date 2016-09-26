@@ -9,7 +9,7 @@
 #include "ul_tx.h"
 
 #define DATALEN 2000
-#define PKTLEN 800
+#define PKTLEN 1600
 
 bool get_data();
 
@@ -17,9 +17,9 @@ using namespace win;
 
 double freq = 2e9;
 double samp_rate = 10e6;
-double tx_gain = 20;
+double tx_gain = 30;
 //double rx_gain = 30;
-double amp = 0.1;
+double amp = 2.0;
 std::string device_addr = "addr=192.168.10.2";
 
 std::vector<std::complex<double> > data(DATALEN);
@@ -55,6 +55,7 @@ int main(int argc, char * argv[]){
     }
 
     tx.set_samp_rate(samp_rate);
+    tx.set_tx_gain(tx_gain);
     tx.init_usrp();
     tx.use_external_clock();
     tx.reset_usrp_time();
@@ -64,7 +65,7 @@ int main(int argc, char * argv[]){
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     double curr_time = tx.get_usrp_time().get_real_secs();
     double samp_duration = 1/samp_rate;
-    double rep_time = samp_duration*PKTLEN*2;
+    double rep_time = samp_duration*(PKTLEN+160);
     tx_time = curr_time + 0.5;
     while(1)
     {
@@ -84,7 +85,7 @@ int main(int argc, char * argv[]){
 bool get_data()
 {
     std::ifstream datafile;
-    float tempdata[2*DATALEN];
+    float tempdata[2*DATALEN] = {0.0};
     if(fileindex == 0)
         datafile.open("../int_data1.dat", std::ios::in | std::ios::binary);
     else
@@ -95,14 +96,14 @@ bool get_data()
         std::cout << "Cannot open file.\n";
         return false;
     }
-    datafile.read((char*)&tempdata, 2*DATALEN);
+    datafile.read((char*)&tempdata, 8*DATALEN);
 
     for(int i=0; i<DATALEN; i++)
     {
         data[i].real(tempdata[2*i]);
-        data[i].imag(tempdata[2*i+1]);
+        data[i].imag(0-tempdata[2*i+1]);
     }
-    // for(int i=0; i<200; i++)
-    //     std::cout << i << " : " << data[i] << std::endl;
+    for(int i=DATALEN-900; i<DATALEN; i++)
+        std::cout << i << " : " << tempdata[i] << std::endl;
     std::cout << std::endl;
 }
