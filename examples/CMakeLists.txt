@@ -21,6 +21,9 @@ list(APPEND test_rx_srcs
 list(APPEND test_rxtx_srcs
 	test_rxtx.cpp
 )
+list(APPEND test_int_tx_srcs
+	test_int_tx.cpp
+)
 
 
 ########################################################################
@@ -29,6 +32,7 @@ list(APPEND test_rxtx_srcs
 add_executable(test_tx ${test_tx_srcs})
 add_executable(test_rx ${test_rx_srcs})
 add_executable(test_rxtx ${test_rxtx_srcs})
+add_executable(test_int_tx ${test_int_tx_srcs})
 
 
 ########################################################################
@@ -37,3 +41,4 @@ add_executable(test_rxtx ${test_rxtx_srcs})
 target_link_libraries(test_tx wl_sync_test)
 target_link_libraries(test_rx wl_sync_test)
 target_link_libraries(test_rxtx wl_sync_test)
+target_link_libraries(test_int_tx wl_sync_test)
