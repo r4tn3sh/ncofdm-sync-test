@@ -58,6 +58,7 @@ int main(int argc, char * argv[]){
         samples[i] = amp*data[i];
     }
 
+    rxtx.set_samp_rate(samp_rate);
     rxtx.init_usrp();
     rxtx.use_external_clock();
     // rxtx.reset_usrp_time();
@@ -71,6 +72,16 @@ int main(int argc, char * argv[]){
     double curr_time = rxtx.get_usrp_time().get_real_secs();
 
     double samp_duration = 1.0/samp_rate;
+    double extra_offset;
+    if (samp_rate == 10e6)
+        extra_offset= 32*samp_duration;
+    else if (samp_rate == 5e6 || samp_rate == 2e6 || samp_rate == 1e6)
+        extra_offset= 24*samp_duration;
+    else
+    {
+        std::cout << "Rate not supported. Exiting ......."<< std::endl;
+        return(0);
+    }
 
     // ********** Detection ************
     std::cout << "PN sequence detection started at "<< curr_time << std::endl;
@@ -94,7 +105,7 @@ int main(int argc, char * argv[]){
             rx_time += pk_index*samp_duration;
             std::cout<< "Signal found at " << pk_index << " at time " << rx_time << std::endl;
             std::cout<< "Detailed frame start time : " <<rx_metadata.time_spec.get_full_secs() << " + " <<rx_metadata.time_spec.get_frac_secs() << std::endl;
-            tx_time = rx_time + samp_duration*(PKTLEN+160) +0.96-32*samp_duration; //FIXME: hack for 960 sample repetition
+            tx_time = rx_time + samp_duration*(PKTLEN+160) + 0.96 - extra_offset; //FIXME: hack for 960 sample repetition
             std::cout<< "Transmission scheduled at "  << tx_time << std::endl;
             break;
         }
