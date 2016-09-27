@@ -9,7 +9,7 @@
 #include "ul_rxtx.h"
 
 #define DATALEN 2000
-#define PKTLEN 2000
+#define PKTLEN 800
 #define ULSEQLEN 160
 #define COEFFTHRESH 0.5
 
@@ -23,14 +23,14 @@ double freq = 2e9;
 double samp_rate = 10e6;
 double rx_gain = 20;
 //double rx_gain = 30;
-double amp = 0.1;
+double amp = 2.0;
 std::string device_addr = "addr=192.168.10.2";
 
-char pnseq[ULSEQLEN];
+char pnseq[DATALEN];
+double pnseq_d[ULSEQLEN];
 std::vector<std::complex<double> > data(DATALEN);
 unsigned int fileindex;
 unsigned int pnsearch = 0;
-double pnseq_d[ULSEQLEN];
 
 double tx_time = 0.0;
 double rx_time = 0.0;
@@ -47,10 +47,9 @@ int main(int argc, char * argv[]){
         fileindex = strtol(argv[1], NULL, 10);
     }
 
-	std::cout << "Start transmit chain..." << std::endl;
-    srand(time(NULL)); //Initialize random seed
-
     get_data();
+    std::cout << "File read complete." << std::endl;
+
     ul_rxtx rxtx = ul_rxtx();
 
     std::vector<std::complex<double> > samples(PKTLEN);
@@ -110,12 +109,13 @@ int main(int argc, char * argv[]){
     }
     rxtx.stop_rx();
     // ********** Transmission ************
+    double rep_time = samp_duration*(PKTLEN+160);
     std::cout << "Current time is " << rxtx.get_usrp_time().get_real_secs() << std::endl; 
     std::cout << "Transmisson started ..." << std::endl;
 
     while(1)
     {
-        tx_time += 0.0001;
+        tx_time += rep_time;
         rxtx.set_txmetadata(true, true, true, uhd::time_spec_t(tx_time));
         rxtx.send_data(samples);
     }
@@ -204,6 +204,10 @@ bool get_data()
         std::cout << "Cannot open file.\n";
         return false;
     }
+    else
+    {
+        std::cout << "Data file opened.\n";
+    }
     datafile.read((char*)&tempdata, 8*DATALEN);
 
     for(int i=0; i<DATALEN; i++)
@@ -219,7 +223,12 @@ bool get_data()
         std::cout << "Cannot open file.\n";
         return false;
     }
+    else
+    {
+        std::cout << "PN-seq file opened.\n";
+    }
     pnfile.read(pnseq, DATALEN);
+    std::cout << "PN-seq file read complete.\n";
 
 
     for (int i=0; i<ULSEQLEN; i++)

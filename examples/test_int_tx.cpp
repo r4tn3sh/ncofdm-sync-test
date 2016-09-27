@@ -96,6 +96,10 @@ bool get_data()
         std::cout << "Cannot open file.\n";
         return false;
     }
+    else
+    {
+        std::cout << "Data file opened.\n";
+    }
     datafile.read((char*)&tempdata, 8*DATALEN);
 
     for(int i=0; i<DATALEN; i++)
