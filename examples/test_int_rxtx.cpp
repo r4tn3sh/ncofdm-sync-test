@@ -23,7 +23,7 @@ double freq = 2e9;
 double samp_rate = 10e6;
 double rx_gain = 20;
 //double rx_gain = 30;
-double amp = 2.0;
+double amp = 2.5;
 std::string device_addr = "addr=192.168.10.2";
 
 char pnseq[DATALEN];
@@ -94,7 +94,7 @@ int main(int argc, char * argv[]){
             rx_time += pk_index*samp_duration;
             std::cout<< "Signal found at " << pk_index << " at time " << rx_time << std::endl;
             std::cout<< "Detailed frame start time : " <<rx_metadata.time_spec.get_full_secs() << " + " <<rx_metadata.time_spec.get_frac_secs() << std::endl;
-            tx_time = rx_time + samp_duration*(PKTLEN+160) +0.96; //FIXME: hack for 960 sample repetition
+            tx_time = rx_time + samp_duration*(PKTLEN+160) +0.96-32*samp_duration; //FIXME: hack for 960 sample repetition
             std::cout<< "Transmission scheduled at "  << tx_time << std::endl;
             break;
         }
