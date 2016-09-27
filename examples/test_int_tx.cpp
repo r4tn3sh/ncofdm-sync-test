@@ -9,7 +9,7 @@
 #include "ul_tx.h"
 
 #define DATALEN 2000
-#define PKTLEN 1600
+#define PKTLEN 800
 
 bool get_data();
 
