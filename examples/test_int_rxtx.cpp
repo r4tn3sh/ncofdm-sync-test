@@ -21,9 +21,9 @@ using namespace win;
 
 double freq = 2e9;
 double samp_rate = 10e6;
+double tx_gain = 24;
 double rx_gain = 20;
-//double rx_gain = 30;
-double amp = 2.5;
+double amp = 2.0;
 std::string device_addr = "addr=192.168.10.2";
 
 char pnseq[DATALEN];
@@ -58,6 +58,8 @@ int main(int argc, char * argv[]){
         samples[i] = amp*data[i];
     }
 
+    rxtx.set_tx_gain(tx_gain);
+    rxtx.set_rx_gain(rx_gain);
     rxtx.set_samp_rate(samp_rate);
     rxtx.init_usrp();
     rxtx.use_external_clock();

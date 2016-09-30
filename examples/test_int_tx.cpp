@@ -17,7 +17,7 @@ using namespace win;
 
 double freq = 2e9;
 double samp_rate = 10e6;
-double tx_gain = 30;
+double tx_gain = 24;
 //double rx_gain = 30;
 double amp = 2.0;
 std::string device_addr = "addr=192.168.10.2";
