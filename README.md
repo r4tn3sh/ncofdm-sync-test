@@ -3,6 +3,8 @@
 Testing the underlay to achieve the synchronization between two different transmissions.
 
 ## Installation
+git clone https://github.com/r4tn3sh/ncofdm-sync-test.git
+cd ncofdm-sync-test
 mkdir build  
 cd build  
 cmake ../  
