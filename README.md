@@ -42,4 +42,4 @@ omf tell -a on -t nodeX-X,nodeY-Y,nodeZ-Z
 
 ### login to nodeY-Y (transmitter 2)  
 
-### login to nodeZ-Z (data conllector)
+### login to nodeZ-Z (data collector)
