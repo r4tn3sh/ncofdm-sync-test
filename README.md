@@ -30,12 +30,17 @@ cd ncofdm-sync-test/bin
 ./test_tx 0  
 
 ## Running experiment in ORBIT testbed  
+
 ### login to grid  
 ssh -X username@grid.orbit-lab.org  
+
 ### load the image to nodeX-X, nodeY-Y and nodeZ-Z  
 omf tell -a offh -t nodeX-X,nodeY-Y,nodeZ-Z  
 omf load -i image.ndz -t nodeX-X,nodeY-Y,nodeZ-Z  
 omf tell -a on -t nodeX-X,nodeY-Y,nodeZ-Z  
-### login to nodeX-X (transmitter 1)
-### login to nodeY-Y (transmitter 2)
+
+### login to nodeX-X (transmitter 1)  
+
+### login to nodeY-Y (transmitter 2)  
+
 ### login to nodeZ-Z (data conllector)
