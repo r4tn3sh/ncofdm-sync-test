@@ -2,8 +2,7 @@
 
 Testing the underlay to achieve the synchronization between two different NC-OFDM transmissions. In this experiment a low-power underlay PN-sequence is used as a beacon signal
 to indicate the start of an NC-OFDM symbol to other subsquent NC-OFDM links. This transmission, by design, consists of a low-power underlay PN-sequence
-followed by a fixed number of NC-OFDM symbols (constituting a frame) that are peri-
-odically transmitted. Now, when a second NC-OFDM transmitter
+followed by a fixed number of NC-OFDM symbols (constituting a frame) that are periodically transmitted. Now, when a second NC-OFDM transmitter
 is ready to start its own transmissions it first scans the medium for the presence of
 beacon signals that indicate ongoing signal transmissions. If no such beacons are found
 for a specified duration then the transmitter declares a time out and starts to transmit.
